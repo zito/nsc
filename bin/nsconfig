@@ -6,13 +6,21 @@ set -e
 
 M4=`which gm4` || M4=`which m4` || ( echo "Unable to find M4!" ; exit 1 )
 DOMAINS=cf/domains
+eval $(
+	{
+		echo "divert(0)\`ZONEDIR'=ZONEDIR"
+		echo "\`HASHDIR'=HASHDIR"
+		echo "\`BAKDIR'=BAKDIR"
+		echo "\`VERSDIR'=VERSDIR"
+	} | $M4 -DM4=$M4 m4/dnslib.m4 -
+	)
 
 if [ ! -f $DOMAINS ] ; then
 	echo "Domain list file missing."
 	exit 1
 	fi
 
-mkdir -p zone bak hash ver
+mkdir -p $ZONEDIR $BAKDIR $HASHDIR $VERSDIR
 $M4 m4/mkconf.m4 $DOMAINS >named.conf
 $M4 m4/mkmf.m4 $DOMAINS >Makefile
 $M4 -DM4=$M4 m4/mkgenzone.m4 >bin/genzone
