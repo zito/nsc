@@ -30,6 +30,7 @@ divert(-1)')
 
 # Definition of a forwarding zone
 
+define(`FORWard', `patsubst(`$*',`,',`; ')')
 define(`FORWARDING', `divert(0)zone "$1" in {
 	type forward;
 	forward only;
