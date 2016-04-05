@@ -20,6 +20,7 @@ define(`PRIMARIES', PRIMARIES ZONEDIR/nsc_file_name($1))
 define(`REVERSE', `PRIMARY(nsc_if_v6($1,`nsc_revblock6($1)',`nsc_revaddr($1)'), shift($@))')
 
 define(`BLACKHOLE', `define(`NEED_BLACKHOLE', 1)')
+define(`CONFIG', `$1')	# for BLACKHOLE encapsulated in CONFIG...
 
 # Insertion of raw makefile material
 
