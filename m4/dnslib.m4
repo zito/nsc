@@ -6,7 +6,7 @@ divert(-1)
 
 # NSC version
 
-define(`NSCVER', `NSC 3.1')
+define(`NSCVER', `NSC 4.0')
 
 # Current date and time
 
