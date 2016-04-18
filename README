@@ -21,7 +21,7 @@ for all your hosts, handling of classless reverse delegations and support for IP
 (AAAA and PTR in ip6.arpa, not A6 and DNAME which seem to be dying out).
 
    NSC requires GNU m4, a POSIX-compatible shell and the `md5sum' utility (which
-is present for examile in GNU coreutils). Some of the extra utilities require
+is present for example in GNU coreutils). Some of the extra utilities require
 Perl 5. I've tested everything on Linux (Debian Squeeze), but the whole package
 should run on other unices as well.
 
