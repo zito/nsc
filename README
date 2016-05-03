@@ -103,8 +103,8 @@ files and subdirectories:
 The domain list contains configuration commands describing all domains handled
 by your server and their parameters. In fact, it's a M4 script, but viewing it as
 a config file is a good approximation (however, see Section 8 for some caveats).
-Lines starting with a semicolon are treated as comments and ignored. Text outside
-declarations is silently ignored.
+Lines starting with character `#' are treated as comments and ignored. Text
+outside declarations is silently ignored.
 
 You can specify:
 
@@ -166,9 +166,7 @@ ZONE_OPTIONS(`options;
 	more options;
 ')
 		Define options to be inserted to all subsequent zone declarations
-		until the next ZONE_OPTIONS command. Please keep in mind that the
-		semicolon character act as M4 comment, so you need to put the
-		closing quote at a separate line. See our example cf/domains.
+		until the next ZONE_OPTIONS command. See our example cf/domains.
 
 CONFIG(...)
 		Insert user data to named.conf, again beware of semicolons.
@@ -452,10 +450,9 @@ you need, the most helpful one being definition of your own macros by
 
 However, there is a couple of things you need to care about:
 
-  o  The comment character is redefined to `;'. I.e., wherever a semicolon
-     occurs, the rest of the line is a comment which is copied verbatim
-     to the output file (if the output is not suppressed like in case
-     of the cf/domains file).
+  o  The comment character is redefined to `;' in domain files. I.e., wherever
+     a semicolon occurs, the rest of the line is a comment which is copied
+     verbatim to the output file.
 
   o  Names starting with 'nsc_' or spelled in all caps are reserved
      for the NSC itself and unless documented, messing with them can

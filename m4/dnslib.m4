@@ -108,10 +108,6 @@ define(`NSNAME', translit(esyscmd(`hostname -f'),`
 ',`'))
 define(`MAINTNAME', `root'.`nsc_corr_dot(NSNAME)')
 
-# And finally we change comments to semicolons to be compatible with the zone files
 
-changecom(;)
-
-; User-defined parts of configuration
-
+# User-defined parts of configuration
 include(CFDIR/config)
