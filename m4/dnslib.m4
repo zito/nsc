@@ -31,7 +31,7 @@ define(nsc_revaddr, `nsc_revIPa(translit($1, `.', `,'))')
 # Fix up dots in a name: if the name is not simple (i.e., it contains at least one dot),
 # ensure that it ends with a dot.
 
-define(nsc_corr_dot, `ifelse(substr($1,decr(len($1))),.,$1,$1`'ifelse(index($1,.),-1,,.))')
+define(`nsc_corr_dot', `ifelse(substr(`$1',decr(len(`$1'))),.,``$1'',``$1''`'ifelse(index(`$1',.),-1,,.))')
 
 # Normalize IPv6 address
 
@@ -61,14 +61,19 @@ define(nsc_revblock6, `nsc_do_revblock6(translit($1,/,`,'))')
 define(nsc_do_revblock6, `substr(nsc_revaddr6($1),dnl
 ifelse(eval($2%4),0,`eval(64-$2/2)',`nsc_fatal_error(`Prefixes must respect hex digit boundary')'))')
 
+# Quoting
+
+define(`nsc_quote', `ifelse(`$#', `0', `', ``$*'')')
+define(`nsc_dquote', ``$@'')
+
 # Iteration
 
-define(nsc_itera, `ifelse($1,,,`nsc_iter($1)')`'ifelse($#,1,,`nsc_itera(shift($@))')')
+define(nsc_itera, `ifelse($1,,,`nsc_iter(`$1')')`'ifelse($#,1,,`nsc_itera(shift($@))')')
 define(nsc_iterate, `define(`nsc_iter', defn(`$1'))nsc_itera(shift($@))')
 
 # Generate name of reverse domain
 
-define(REV, `nsc_if_v6($1,`nsc_revblock6($1).ip6.arpa',`nsc_revaddr($1).in-addr.arpa')')
+define(`REV', `nsc_if_v6($1,`nsc_revblock6($1).ip6.arpa',`nsc_revaddr($1).in-addr.arpa')')
 
 # A for loop macro from m4 doc
 
