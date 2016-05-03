@@ -103,8 +103,9 @@ files and subdirectories:
 The domain list contains configuration commands describing all domains handled
 by your server and their parameters. In fact, it's a M4 script, but viewing it as
 a config file is a good approximation (however, see Section 8 for some caveats).
-Lines starting with character `#' are treated as comments and ignored. Text
-outside declarations is silently ignored.
+Lines starting with character `#' are treated as comments and just copied to
+the generated configuration file named.conf. Text outside declarations is
+copied to the output too.
 
 You can specify:
 
@@ -169,7 +170,8 @@ ZONE_OPTIONS(`options;
 		until the next ZONE_OPTIONS command. See our example cf/domains.
 
 CONFIG(...)
-		Insert user data to named.conf, again beware of semicolons.
+		Insert user data to named.conf. It is not needed any more.
+		Everything outside directives is copied to named.conf.
 
 MAKEFILE(...)
 		Insert user data to Makefile.
@@ -321,7 +323,7 @@ To change the setting, use
 		define(`variable', `value')
 
 As usually, even this config file is a M4 script. Comments can be started by
-semicolons, text outside macros is ignored.
+character `#', text outside macros is copied to named.conf.
 
 The following variables are available:
 
@@ -452,7 +454,8 @@ However, there is a couple of things you need to care about:
 
   o  The comment character is redefined to `;' in domain files. I.e., wherever
      a semicolon occurs, the rest of the line is a comment which is copied
-     verbatim to the output file.
+     verbatim to the output file. For the domain list file and the config file
+     is standard comment character `#'!
 
   o  Names starting with 'nsc_' or spelled in all caps are reserved
      for the NSC itself and unless documented, messing with them can
