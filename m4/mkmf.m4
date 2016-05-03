@@ -8,19 +8,23 @@ include(m4/dnslib.m4)
 
 define(`PRIMARIES', `')
 
-define(`nsc_prepend_cf_one', ` 'CFDIR/`nsc_file_name($1)')
-define(`nsc_prepend_cf_multi', `nsc_iterate(`nsc_prepend_cf_one', $@)')
-define(`PRIMARY', `divert(0)ZONEDIR/nsc_file_name($1):dnl
- esyscmd(`echo $(m4 -di -DHASHING m4/nsc.m4 'nsc_prepend_cf_multi($@)` 2>&1 >/dev/null \
+define(`nsc_file_name_src', `nsc_file_name(patsubst(`$*', `.\(ip6\|in-addr\).arpa$', `'))')
+define(`nsc_src_files', `nsc_foreach(`F', `($@)', ` CFDIR/nsc_file_name_src(F)')')
+
+define(`PRIMARY', `
+pushdef(`_DEPS', nsc_quote(nsc_src_files($@)))
+divert(0)ZONEDIR/nsc_file_name(`$1'):dnl
+ esyscmd(`echo $(m4 -di -DHASHING m4/nsc.m4 '_DEPS` 2>&1 >/dev/null \
 	    | sed -n "s/^m4debug: input read from //p;");
-	    echo "generating dependencies for 'ZONEDIR/nsc_file_name($1)`" >&2')dnl
-	@bin/genzone nsc_file_name($1)`'nsc_prepend_cf_multi($@)
+	    echo "generating dependencies for 'ZONEDIR/nsc_file_name(`$1')`" >&2')dnl
+	@bin/genzone nsc_file_name(`$1')`'_DEPS
 
 divert(-1)
+popdef(`_DEPS')
 define(`PRIMARIES', PRIMARIES ZONEDIR/nsc_file_name($1))
 ')
 
-define(`REVERSE', `PRIMARY(nsc_if_v6($1,`nsc_revblock6($1)',`nsc_revaddr($1)'), shift($@))')
+define(`REVERSE', `PRIMARY(REV($1), shift($@))')
 
 define(`BLACKHOLE', `define(`NEED_BLACKHOLE', 1)')
 define(`CONFIG', `$1')	# for BLACKHOLE encapsulated in CONFIG...

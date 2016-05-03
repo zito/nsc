@@ -9,13 +9,13 @@ include(m4/dnslib.m4)
 define(`DO_PRIMARY', `dnl
 zone "$1" in {
 	type master;
-	file "ZONEDIR/nsc_file_name($2)";
+	file "ZONEDIR/nsc_file_name($1)";
 ZZ_OPTIONS()dnl
 };
 ')
 
-define(`PRIMARY', `DO_PRIMARY($1,$1)')
-define(`REVERSE', `DO_PRIMARY(REV($1),nsc_if_v6($1,`nsc_revblock6($1)',`nsc_revaddr($1)'))')
+define(`PRIMARY', `DO_PRIMARY($1)')
+define(`REVERSE', `DO_PRIMARY(REV($1))')
 
 # Definition of secondary domain
 

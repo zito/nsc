@@ -83,6 +83,14 @@ define(`nsc__forloop',
    `$4`'ifelse($1, `$3', ,
    `define(`$1', incr($1))nsc__forloop(`$1', `$2', `$3', `$4')')')
 
+# A foreach macro from m4 doc
+# nsc_foreach(x, (item_1, item_2, ..., item_n), stmt)
+#   parenthesized list, simple version
+define(`nsc_foreach', `pushdef(`$1')nsc__foreach($@)popdef(`$1')')
+define(`nsc__arg1', `$1')
+define(`nsc__foreach', `ifelse(`$2', `()', `',
+  `define(`$1', nsc__arg1$2)$3`'$0(`$1', (shift$2), `$3')')')
+
 # Reporting errors
 
 define(`nsc_fatal_error', `errprint(`NSC error: $1
