@@ -8,16 +8,35 @@ include(m4/dnslib.m4)
 
 define(`PRIMARIES', `')
 
-define(`nsc_file_name_src', `nsc_file_name(patsubst(`$*', `.\(ip6\|in-addr\).arpa$', `'))')
+# Generate file name of reverse domain
+
+define(`nsc_rev_to_ip4', `nsc_revaddr(patsubst(`$1', `\.in-addr\.arpa$', `'))')
+define(`nsc_rev_to_ip6a', `ifelse($#, 1, `$1', `nsc_rev_to_ip6a(shift($@))$1')')
+define(`nsc_rev_to_ip6g', `patsubst(patsubst(`$1', `....', `\&:'), `:$', `')')
+define(`nsc_rev_to_ip6', `nsc_rev_to_ip6g(nsc_rev_to_ip6a(translit(`patsubst(`$1', `\.ip6\.arpa$', `')', `.', `,')))')
+define(`nsc_rev_to_fwd', `ifelse(regexp(`$1', `\.arpa$'), -1, `$1',
+    ifelse(regexp(`$1', `^\([0-9]+/\)?\([0-9]+\.\)+in-addr\.arpa'), 0, `nsc_rev_to_ip4(`$1')',
+	regexp(`$1', `^\([0-9a-fA-F]\.\)+ip6.arpa'), 0, `nsc_rev_to_ip6(`$1')',
+	`$1'))')
+
+define(`nsc_quote_colon', `patsubst(`$1', `:', `\\:')')
+
+define(`nsc_file_name_trans', ifelse(REVERSESOURCEMODE, `forward',
+    ``nsc_rev_to_fwd(`$1')'',
+    REVERSESOURCEMODE, `short',
+    ``patsubst(`$1', `.\(ip6\|in-addr\).arpa$', `')'',
+    ``$1''))
+
+define(`nsc_file_name_src', `nsc_file_name(nsc_file_name_trans(`$1'))')
 define(`nsc_src_files', `nsc_foreach(`F', `($@)', ` CFDIR/nsc_file_name_src(F)')')
 
 define(`PRIMARY', `
 pushdef(`_DEPS', nsc_quote(nsc_src_files($@)))
 divert(0)ZONEDIR/nsc_file_name(`$1'):dnl
- esyscmd(`echo $(m4 -di -DHASHING m4/nsc.m4 '_DEPS` 2>&1 >/dev/null \
+ nsc_quote_colon(esyscmd(`echo $(m4 -di -DHASHING m4/nsc.m4 '_DEPS` 2>&1 >/dev/null \
 	    | sed -n "s/^m4debug: input read from //p;");
-	    echo "generating dependencies for 'ZONEDIR/nsc_file_name(`$1')`" >&2')dnl
-	@bin/genzone nsc_file_name(`$1')`'_DEPS
+	    echo "generating dependencies for 'ZONEDIR/nsc_file_name(`$1')`" >&2'))dnl
+	@bin/genzone nsc_file_name(`$1')`'nsc_quote_colon(_DEPS)
 
 divert(-1)
 popdef(`_DEPS')

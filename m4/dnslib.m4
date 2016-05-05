@@ -107,6 +107,7 @@ define(`BAKDIR', `bak')
 define(`VERSDIR', `ver')
 define(`HASHDIR', `hash')
 define(`ROOTCACHE', `root.cache')
+define(`REVERSESOURCEMODE', `short')
 
 define(`REFRESH', HOURS(8))
 define(`RETRY', HOURS(2))

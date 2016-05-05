@@ -337,6 +337,13 @@ BAKDIR			Directory with backup files (default: bak)
 HASHDIR			Directory with zone hashes (default: hash)
 VERSDIR			Directory with version files (default: var)
 ROOTCACHE		File with the cache of root name servers
+REVERSESOURCEMODE	Mode of name for reverse domain source file
+			(default: short)
+			possible values:
+			    short   - backward compatible and default,
+				      domain name without .{ip6,in-addr}.arpa
+			    forward - short ip net address
+			    long    - full reverse domain name
 
 REFRESH			SOA record parameters
 RETRY
