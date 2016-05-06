@@ -21,7 +21,11 @@ define(DAYS, `eval($1*86400)')
 
 # Since slashes can occur in zone names, we convert them to @'s
 
-define(nsc_file_name, `translit($1,/,@)')
+define(`nsc_file_name', `translit(`$1',/,@)')
+
+# Generated zone file name contains view name
+
+define(`nsc_gen_zone_fn', `nsc_file_name(`$1')`'ifdef(`VIEWNAME', `VIEWSEP`'VIEWNAME')')
 
 # Reverse an IP address
 
@@ -108,6 +112,7 @@ define(`VERSDIR', `ver')
 define(`HASHDIR', `hash')
 define(`ROOTCACHE', `root.cache')
 define(`REVERSESOURCEMODE', `short')
+define(`VIEWSEP', ``,'')
 
 define(`REFRESH', HOURS(8))
 define(`RETRY', HOURS(2))

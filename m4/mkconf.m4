@@ -9,7 +9,7 @@ include(m4/dnslib.m4)
 define(`DO_PRIMARY', `dnl
 zone "$1" in {
 	type master;
-	file "ZONEDIR/nsc_file_name($1)";
+	file "ZONEDIR/nsc_gen_zone_fn($1)";
 ZZ_OPTIONS()dnl
 };
 ')
@@ -22,7 +22,7 @@ define(`REVERSE', `DO_PRIMARY(REV($1))')
 define(`SECONDARY', `dnl
 zone "$1" in {
 	type slave;
-	file "BAKDIR/nsc_file_name($1)";
+	file "BAKDIR/nsc_gen_zone_fn($1)";
 	masters { $2; };
 ZZ_OPTIONS()dnl
 };
@@ -67,6 +67,18 @@ define(`CONFIG', `$1')
 define(`ZZ_OPTIONS', `')
 
 define(`ZONE_OPTIONS', `define(`ZZ_OPTIONS', ifelse(`$1',`',`',``	$1''))')
+
+# Views
+
+define(`unindent', `patsubst(`$1', `^[ \t]*', `')')
+
+define(`VIEW', `define(`VIEWNAME', `$1')
+view "$1" {
+
+patsubst(nsc_quote(unindent(`$2')), `^.', `	\&')dnl
+};
+')
+
 
 # The preamble
 

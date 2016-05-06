@@ -32,21 +32,22 @@ define(`nsc_src_files', `nsc_foreach(`F', `($@)', ` CFDIR/nsc_file_name_src(F)')
 
 define(`PRIMARY', `
 pushdef(`_DEPS', nsc_quote(nsc_src_files($@)))
-divert(0)ZONEDIR/nsc_file_name(`$1'):dnl
+divert(0)ZONEDIR/nsc_gen_zone_fn(`$1'):dnl
  nsc_quote_colon(esyscmd(`echo $(m4 -di -DHASHING m4/nsc.m4 '_DEPS` 2>&1 >/dev/null \
 	    | sed -n "s/^m4debug: input read from //p;");
-	    echo "generating dependencies for 'ZONEDIR/nsc_file_name(`$1')`" >&2'))dnl
-	@bin/genzone nsc_file_name(`$1')`'nsc_quote_colon(_DEPS)
+	    echo "generating dependencies for 'ZONEDIR/nsc_gen_zone_fn(`$1')`" >&2'))dnl
+	@bin/genzone nsc_gen_zone_fn(`$1')`'nsc_quote_colon(_DEPS)
 
 divert(-1)
 popdef(`_DEPS')
-define(`PRIMARIES', PRIMARIES ZONEDIR/nsc_file_name($1))
+define(`PRIMARIES', nsc_quote(PRIMARIES ZONEDIR/nsc_gen_zone_fn(`$1')))
 ')
 
 define(`REVERSE', `PRIMARY(REV($1), shift($@))')
 
 define(`BLACKHOLE', `define(`NEED_BLACKHOLE', 1)')
 define(`CONFIG', `$1')	# for BLACKHOLE encapsulated in CONFIG...
+define(`VIEW', `define(`VIEWNAME', `$1')$2')
 
 # Insertion of raw makefile material
 
@@ -56,7 +57,7 @@ divert(-1)')
 # Last words
 
 define(`nsc_cleanup', `
-ifdef(`NEED_BLACKHOLE', `PRIMARY(blackhole)')
+ifdef(`NEED_BLACKHOLE', `pushdev(`VIEWNAME')undefine(`VIEWNAME')PRIMARY(blackhole)popdef(`VIEWNAME')')
 
 divert(0)dnl
 VERSDIR/.version: CFDIR/domains ROOTCACHE`'PRIMARIES
