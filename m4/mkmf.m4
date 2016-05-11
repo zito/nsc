@@ -32,8 +32,8 @@ define(`nsc_src_files', `nsc_foreach(`F', `($@)', ` CFDIR/nsc_file_name_src(F)')
 
 define(`PRIMARY', `
 pushdef(`_DEPS', nsc_quote(nsc_src_files($@)))
-divert(0)ZONEDIR/nsc_gen_zone_fn(`$1'):dnl
- nsc_quote_colon(esyscmd(`echo $(m4 -di -DHASHING m4/nsc.m4 '_DEPS` 2>&1 >/dev/null \
+divert(0)ZONEDIR/nsc_gen_zone_fn(`$1'): Makefile dnl
+nsc_quote_colon(esyscmd(`echo $(m4 -di -DHASHING m4/nsc.m4 '_DEPS` 2>&1 >/dev/null \
 	    | sed -n "s/^m4debug: input read from //p;");
 	    echo "generating dependencies for 'ZONEDIR/nsc_gen_zone_fn(`$1')`" >&2'))dnl
 	@bin/genzone nsc_gen_zone_fn(`$1')`'nsc_quote_colon(_DEPS)
