@@ -169,6 +169,16 @@ ZONE_OPTIONS(`options;
 		Define options to be inserted to all subsequent zone declarations
 		until the next ZONE_OPTIONS command. See our example cf/domains.
 
+DNSSEC_MAINTAIN(`
+    PRIMARY(zone)
+    ...
+')
+		Wrapper for adding zone options for DNSSEC inline-signing. All
+		zones passed (must be quoted) will have added options:
+		    auto-dnssec maintain;
+		    inline-signing yes;
+		You should have generated KSK for zones.
+
 CONFIG(...)
 		Insert user data to named.conf. It is not needed any more.
 		Everything outside directives is copied to named.conf.

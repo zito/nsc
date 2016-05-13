@@ -68,6 +68,15 @@ define(`ZZ_OPTIONS', `')
 
 define(`ZONE_OPTIONS', `define(`ZZ_OPTIONS', ifelse(`$1',`',`',``	$1''))')
 
+# Wrapper for DNSSEC inline-signing
+
+define(`DNSSEC_MAINTAIN', `dnl
+pushdef(`ZZ_OPTIONS', `dnl
+	auto-dnssec maintain;
+	inline-signing yes;
+'defn(`ZZ_OPTIONS'))$1popdef(`ZZ_OPTIONS')dnl
+')
+
 # Views
 
 define(`unindent', `patsubst(`$1', `^[ \t]*', `')')
