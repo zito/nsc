@@ -12,6 +12,13 @@ Version 4.1  [2016-xx-xx]
      according the domain name (previously striped).
      Example primary zone:
 	`zone/168.192' -> now `zone/168.192.in-addr.arpa'
+  o  Zone dependencies in Makefile are calculated dynamically, so you
+     can split configuration into multiple files (m4 include) and
+     make run works as expected (rebuilds zone).
+  o  Source files for reverse zones can be named with forward address
+     part. Instead of cf/0.0.127 you can name it cf/127.0.0 and place
+	 define(`REVERSESOURCEMODE', `forward')
+     into cf/config.
   o  Added support for DNS BIND views
   o  Added macro DNSSEC_MAINTAIN to add options `auto-dnssec maintain'
      and `inline-signing yes'
