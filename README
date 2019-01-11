@@ -348,6 +348,9 @@ The following variables are available:
 
 NAMED_RESTART_CMD	Shell command for restarting the name server daemon
 			(default: ndc restart)
+NAMED_CHECKZONE_CMD	Shell command for checking zone files. Prepared for
+			named-checkzone command accepting arguments zonename
+			and filename. Generation of zone files will be slower so.
 
 ROOT			Root directory of the whole package (default: /etc/named)
 CFDIR			Directory with config files (default: cf)

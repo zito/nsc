@@ -103,6 +103,7 @@ define(`nsc_fatal_error', `errprint(`NSC error: $1
 # Default values of parameters
 
 define(`NAMED_RESTART_CMD', `ndc reload')
+dnl define(`NAMED_CHECKZONE_CMD', `chronic named-checkzone')
 
 define(`ROOT', `/etc/named')
 define(`CFDIR', `cf')

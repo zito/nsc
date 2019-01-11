@@ -36,7 +36,8 @@ divert(0)ZONEDIR/nsc_gen_zone_fn(`$1'): Makefile dnl
 nsc_quote_colon(esyscmd(`echo $(m4 -di -DHASHING m4/nsc.m4 '_DEPS` 2>&1 >/dev/null \
 	    | sed -n "s/^m4debug: input read from //p;");
 	    echo "generating dependencies for 'ZONEDIR/nsc_gen_zone_fn(`$1')`" >&2'))dnl
-	@bin/genzone nsc_gen_zone_fn(`$1')`'nsc_quote_colon(_DEPS)
+	@bin/genzone nsc_gen_zone_fn(`$1')`'nsc_quote_colon(_DEPS)`'ifdef(`NAMED_CHECKZONE_CMD', `
+	@NAMED_CHECKZONE_CMD `$1' `$'@')
 
 divert(-1)
 popdef(`_DEPS')
