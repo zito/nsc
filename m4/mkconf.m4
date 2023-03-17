@@ -10,6 +10,7 @@ define(`DO_PRIMARY', `dnl
 zone "$1" in {
 	type master;
 	file "ZONEDIR/nsc_gen_zone_fn($1)";
+ZZ_DNSSEC_OPTIONS()dnl
 ZZ_OPTIONS()dnl
 };
 ')
@@ -68,13 +69,26 @@ define(`ZZ_OPTIONS', `')
 
 define(`ZONE_OPTIONS', `define(`ZZ_OPTIONS', ifelse(`$1',`',`',``	$1''))')
 
-# Wrapper for DNSSEC inline-signing
+# DNSSEC zone options
+
+define(`ZZ_DNSSEC_OPTIONS', `')
+
+# Wrapper for DNSSEC auto-dnssec maintain & inline-signing
 
 define(`DNSSEC_MAINTAIN', `dnl
-pushdef(`ZZ_OPTIONS', `dnl
+pushdef(`ZZ_DNSSEC_OPTIONS', `dnl
 	auto-dnssec maintain;
 	inline-signing yes;
-'defn(`ZZ_OPTIONS'))$1popdef(`ZZ_OPTIONS')dnl
+'defn(`ZZ_DNSSEC_OPTIONS'))$1popdef(`ZZ_DNSSEC_OPTIONS')dnl
+')
+
+# Wrapper for dnssec-policy
+
+define(`DNSSEC_POLICY', `dnl
+pushdef(`ZZ_DNSSEC_OPTIONS', `dnl
+	dnssec-policy $1;
+	inline-signing yes;
+'defn(`ZZ_DNSSEC_OPTIONS'))$2popdef(`ZZ_DNSSEC_OPTIONS')dnl
 ')
 
 # Views

@@ -49,6 +49,7 @@ define(`REVERSE', `PRIMARY(REV($1), shift($@))')
 define(`BLACKHOLE', `define(`NEED_BLACKHOLE', 1)')
 define(`CONFIG', `$1')	# for BLACKHOLE encapsulated in CONFIG...
 define(`DNSSEC_MAINTAIN', `$1')
+define(`DNSSEC_POLICY', `$2')
 define(`VIEW', `define(`VIEWNAME', `$1')$2')
 
 # Insertion of raw makefile material
